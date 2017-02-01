@@ -9,10 +9,9 @@
 import { NgModule } from '@angular/core';
 import { UniversalModule } from 'angular2-universal';
 import { FormsModule } from '@angular/forms';
-import { Http } from '@angular/http';
 import { TranslateModule, TranslateLoader, TranslateService } from 'ng2-translate';
 import { Routes, RouterModule } from '@angular/router';
-import { LocalizeRouterModule, StaticParserLoader, LocalizeParser } from 'localize-router';
+import { LocalizeRouterModule, LocalizeParser } from 'localize-router';
 
 import { AppComponent } from './index';
 import { HomeModule } from './home/home.module';
@@ -34,8 +33,23 @@ export class TranslateUniversalLoader implements TranslateLoader {
   }
 }
 
-export function localizeLoaderFactory(translate: TranslateService, http: Http) {
-  return new StaticParserLoader(translate, http);
+export class LocalizeUniversalLoader extends LocalizeParser {
+  /**
+   * Gets config from the server
+   * @param routes
+   */
+  public load(routes: Routes): Promise<any> {
+    return new Promise((resolve: any) => {
+      let data: any = JSON.parse(fs.readFileSync(`/assets/locales.json`, 'utf8'));
+      this.locales = data.locales;
+      this.prefix = data.prefix;
+      this.init(routes).then(resolve);
+    });
+  }
+}
+
+export function localizeLoaderFactory(translate: TranslateService) {
+  return new LocalizeUniversalLoader(translate);
 }
 
 export const routes: Routes = [
@@ -55,7 +69,6 @@ export const routes: Routes = [
      * NOTE: Needs to be your first import (!)
      * BrowserModule, HttpModule, and JsonpModule are included
      */
-    UniversalModule,
     FormsModule,
     /**
      * using routes
@@ -68,9 +81,10 @@ export const routes: Routes = [
     LocalizeRouterModule.forRoot(routes, {
       provide: LocalizeParser,
       useFactory: localizeLoaderFactory,
-      deps: [TranslateService, Http]
+      deps: [TranslateService]
     }),
-    HomeModule
+    HomeModule,
+    UniversalModule
   ]
 })
 export class AppModule {
