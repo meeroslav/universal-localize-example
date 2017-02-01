@@ -1,10 +1,10 @@
-import { UniversalLocalizeExamplePage } from './app.po';
+import { UnLocExamPage } from './app.po';
 
-describe('universal-localize-example App', function() {
-  let page: UniversalLocalizeExamplePage;
+describe('un-loc-exam App', function() {
+  let page: UnLocExamPage;
 
   beforeEach(() => {
-    page = new UniversalLocalizeExamplePage();
+    page = new UnLocExamPage();
   });
 
   it('should display message saying app works', () => {

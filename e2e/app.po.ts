@@ -1,6 +1,6 @@
 import { browser, element, by } from 'protractor';
 
-export class UniversalLocalizeExamplePage {
+export class UnLocExamPage {
   navigateTo() {
     return browser.get('/');
   }
