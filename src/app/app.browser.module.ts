@@ -8,7 +8,6 @@
 
 import { NgModule } from '@angular/core';
 import { UniversalModule } from 'angular2-universal';
-import { FormsModule } from '@angular/forms';
 import { Http } from '@angular/http';
 import { TranslateModule, TranslateLoader, TranslateStaticLoader, TranslateService } from 'ng2-translate';
 import { Routes, RouterModule } from '@angular/router';
@@ -42,8 +41,6 @@ export const routes: Routes = [
      * NOTE: Needs to be your first import (!)
      * BrowserModule, HttpModule, and JsonpModule are included
      */
-    UniversalModule,
-    FormsModule,
     /**
      * using routes
      */
@@ -58,7 +55,8 @@ export const routes: Routes = [
       useFactory: localizeLoaderFactory,
       deps: [TranslateService, Http]
     }),
-    HomeModule
+    HomeModule,
+    UniversalModule
   ]
 })
 export class AppModule {

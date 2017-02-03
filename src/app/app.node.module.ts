@@ -40,7 +40,7 @@ export class LocalizeUniversalLoader extends LocalizeParser {
    */
   public load(routes: Routes): Promise<any> {
     return new Promise((resolve: any) => {
-      let data: any = JSON.parse(fs.readFileSync(`/assets/locales.json`, 'utf8'));
+      let data: any = JSON.parse(fs.readFileSync(`src/assets/locales.json`, 'utf8'));
       this.locales = data.locales;
       this.prefix = data.prefix;
       this.init(routes).then(resolve);
