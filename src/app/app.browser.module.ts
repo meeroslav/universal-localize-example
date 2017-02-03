@@ -12,6 +12,7 @@ import { Http } from '@angular/http';
 import { TranslateModule, TranslateLoader, TranslateStaticLoader, TranslateService } from 'ng2-translate';
 import { Routes, RouterModule } from '@angular/router';
 import { LocalizeRouterModule, StaticParserLoader, LocalizeParser } from 'localize-router';
+import { Location } from '@angular/common';
 
 import { AppComponent } from './index';
 import { HomeModule } from './home/home.module';
@@ -20,8 +21,8 @@ export function createTranslateLoader(http: Http) {
   return new TranslateStaticLoader(http, '/assets/locales', '.json');
 }
 
-export function localizeLoaderFactory(translate: TranslateService, http: Http) {
-  return new StaticParserLoader(translate, http);
+export function localizeLoaderFactory(translate: TranslateService, location: Location, http: Http) {
+  return new StaticParserLoader(translate, location, http);
 }
 
 export const routes: Routes = [
@@ -41,6 +42,7 @@ export const routes: Routes = [
      * NOTE: Needs to be your first import (!)
      * BrowserModule, HttpModule, and JsonpModule are included
      */
+    UniversalModule,
     /**
      * using routes
      */
@@ -53,10 +55,9 @@ export const routes: Routes = [
     LocalizeRouterModule.forRoot(routes, {
       provide: LocalizeParser,
       useFactory: localizeLoaderFactory,
-      deps: [TranslateService, Http]
+      deps: [TranslateService, Location, Http]
     }),
-    HomeModule,
-    UniversalModule
+    HomeModule
   ]
 })
 export class AppModule {

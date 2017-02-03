@@ -12,6 +12,7 @@ import { FormsModule } from '@angular/forms';
 import { TranslateModule, TranslateLoader, TranslateService } from 'ng2-translate';
 import { Routes, RouterModule } from '@angular/router';
 import { LocalizeRouterModule, LocalizeParser } from 'localize-router';
+import { Location } from '@angular/common';
 
 import { AppComponent } from './index';
 import { HomeModule } from './home/home.module';
@@ -27,10 +28,13 @@ export class TranslateUniversalLoader implements TranslateLoader {
    */
   public getTranslation(lang: string): Observable<any> {
     return Observable.create(observer => {
-      observer.next(JSON.parse(fs.readFileSync(`/assets/locales/${lang}.json`, 'utf8')));
+      observer.next(JSON.parse(fs.readFileSync(`src/assets/locales/${lang}.json`, 'utf8')));
       observer.complete();
     });
   }
+}
+export function translateLoaderFactory() {
+  return new TranslateUniversalLoader();
 }
 
 export class LocalizeUniversalLoader extends LocalizeParser {
@@ -48,8 +52,8 @@ export class LocalizeUniversalLoader extends LocalizeParser {
   }
 }
 
-export function localizeLoaderFactory(translate: TranslateService) {
-  return new LocalizeUniversalLoader(translate);
+export function localizeLoaderFactory(translate: TranslateService, location: Location) {
+  return new LocalizeUniversalLoader(translate, location);
 }
 
 export const routes: Routes = [
@@ -75,13 +79,13 @@ export const routes: Routes = [
      */
     TranslateModule.forRoot({
       provide: TranslateLoader,
-      useFactory: TranslateUniversalLoader
+      useFactory: translateLoaderFactory
     }),
     RouterModule.forRoot(routes),
     LocalizeRouterModule.forRoot(routes, {
       provide: LocalizeParser,
       useFactory: localizeLoaderFactory,
-      deps: [TranslateService]
+      deps: [TranslateService, Location]
     }),
     HomeModule,
     UniversalModule
