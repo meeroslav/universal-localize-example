@@ -9,6 +9,7 @@
  * 'home', 'about'
  * ];
  **/
-export const routes: string[] = [
+let fs = require('fs');
+let data: any = JSON.parse(fs.readFileSync(`src/assets/locales.json`, 'utf8'));
 
-];
+export const routes: string[] = data.locales;

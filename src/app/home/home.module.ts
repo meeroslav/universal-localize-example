@@ -11,8 +11,8 @@ let routes = [
 @NgModule({
   imports: [
     TranslateModule,
-    RouterModule.forChild(routes),
-    LocalizeRouterModule.forChild(routes)
+    LocalizeRouterModule.forChild(routes),
+    RouterModule.forChild(routes)
   ],
   declarations: [HomeComponent]
 })

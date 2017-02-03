@@ -1,0 +1,7 @@
+<nav>
+  <a [routerLink]="['../' | localize]">{{'BACK' | translate}}</a>
+</nav>
+<h2>PROFILE</h2>
+<p>
+  {{user | async}}'s profile works!
+</p>
