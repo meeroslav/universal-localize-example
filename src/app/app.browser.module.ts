@@ -9,7 +9,8 @@
 import { NgModule } from '@angular/core';
 import { UniversalModule } from 'angular2-universal';
 import { Http } from '@angular/http';
-import { TranslateModule, TranslateLoader, TranslateStaticLoader, TranslateService } from 'ng2-translate';
+import { TranslateModule, TranslateService, TranslateLoader } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { Routes, RouterModule } from '@angular/router';
 import { LocalizeRouterModule, StaticParserLoader, LocalizeParser } from 'localize-router';
 import { Location } from '@angular/common';
@@ -18,7 +19,7 @@ import { AppComponent } from './index';
 import { HomeModule } from './home/home.module';
 
 export function createTranslateLoader(http: Http) {
-  return new TranslateStaticLoader(http, '/assets/locales', '.json');
+  return new TranslateHttpLoader(http, '/assets/locales', '.json');
 }
 
 export function localizeLoaderFactory(translate: TranslateService, location: Location, http: Http) {
@@ -47,9 +48,11 @@ export const routes: Routes = [
      * using routes
      */
     TranslateModule.forRoot({
-      provide: TranslateLoader,
-      useFactory: (createTranslateLoader),
-      deps: [Http]
+      loader: {
+        provide: TranslateLoader,
+        useFactory: (createTranslateLoader),
+        deps: [ Http ]
+      }
     }),
     RouterModule.forRoot(routes),
     LocalizeRouterModule.forRoot(routes, {

@@ -9,7 +9,7 @@
 import { NgModule } from '@angular/core';
 import { UniversalModule } from 'angular2-universal';
 import { FormsModule } from '@angular/forms';
-import { TranslateModule, TranslateLoader, TranslateService } from 'ng2-translate';
+import { TranslateModule, TranslateLoader, TranslateService } from '@ngx-translate/core';
 import { Routes, RouterModule } from '@angular/router';
 import { LocalizeRouterModule, LocalizeParser } from 'localize-router';
 import { Location } from '@angular/common';
@@ -78,8 +78,10 @@ export const routes: Routes = [
      * using routes
      */
     TranslateModule.forRoot({
-      provide: TranslateLoader,
-      useFactory: translateLoaderFactory
+      loader: {
+        provide: TranslateLoader,
+        useFactory: translateLoaderFactory
+      }
     }),
     RouterModule.forRoot(routes),
     LocalizeRouterModule.forRoot(routes, {
